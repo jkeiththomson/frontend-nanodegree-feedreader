@@ -32,6 +32,7 @@ $(function() {
          * and that the URL is not empty.
          */
          it('have URL defined and URL not empty', function() {
+            expect(allFeeds).toBeDefined();
             for (feed of allFeeds) {
                 expect(feed.url).toBeDefined();
                 expect(feed.url.length).not.toBe(0);
@@ -44,6 +45,7 @@ $(function() {
          * and that the name is not empty.
          */
          it('have name defined and name not empty', function() {
+            expect(allFeeds).toBeDefined();
             for (feed of allFeeds) {
                 expect(feed.name).toBeDefined();
                 expect(feed.name.length).not.toBe(0);
@@ -51,9 +53,14 @@ $(function() {
          });
     });
 
-
     /* TODO: Write a new test suite named "The menu" */
     describe('The Menu', function() {
+        var body;
+
+        // initialize the body element
+        beforeEach(function() {
+            body = $('body');
+        });
 
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
@@ -61,7 +68,8 @@ $(function() {
          * hiding/showing of the menu element.
          */
         it('should be hidden by default', function() {
-            expect($('body').hasClass('menu-hidden')).toBe(true);
+            expect(body).toBeDefined();
+            expect(body.hasClass('menu-hidden')).toBe(true);
         });
 
          /* TODO: Write a test that ensures the menu changes
@@ -70,13 +78,14 @@ $(function() {
           * clicked and does it hide when clicked again.
           */
         it('should toggle visibility when menu icon clicked', function() {
-            $('.menu-icon-link').click();
-            expect($('body').hasClass('menu-hidden')).toBe(false);
-            $('.menu-icon-link').click();
-            expect($('body').hasClass('menu-hidden')).toBe(true);
+            var icon = $('.menu-icon-link');
+            expect(icon).toBeDefined();
+            icon.click();
+            expect(body.hasClass('menu-hidden')).toBe(false);
+            icon.click();
+            expect(body.hasClass('menu-hidden')).toBe(true);
         });
     });
-
 
     /* TODO: Write a new test suite named "Initial Entries" */
     describe('Initial Entries', function() {
@@ -103,7 +112,6 @@ $(function() {
         });
     });
 
-
     /* TODO: Write a new test suite named "New Feed Selection" */
     describe('New Feed Selection', function() {
         var oldTextContent;
@@ -117,9 +125,10 @@ $(function() {
             loadFeed(0, function() {
 
                 // when that finishes, save the content of the first entry
-                var oldContainer = $('.feed');
-                var oldHeader= oldContainer.find('.entry').find('h2').get(0);
+                var oldHeader = $('h2').get(0);
+                expect(oldHeader).toBeDefined();
                 oldTextContent = oldHeader.textContent;
+                expect(oldTextContent.length).toBeGreaterThan(0);
 
                 // now load the second feed
                 loadFeed(1, function() {
@@ -129,9 +138,10 @@ $(function() {
         });
 
         it('should cause new content to be loaded', function(done) {
-            var newContainer = $('.feed');
-            var newHeader= newContainer.find('.entry').find('h2').get(0);
-            newTextContent = newHeader.textContent;
+            var newHeader = $('h2').get(0);
+            expect(newHeader).toBeDefined();
+            var newTextContent = newHeader.textContent;
+            expect(newTextContent.length).toBeGreaterThan(0);
             expect(newTextContent).not.toEqual(oldTextContent);
             done();
         });
